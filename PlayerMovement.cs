@@ -4,59 +4,41 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float boostLimit;
     public float speed;
-    public float boostCooldown;
+    public float boost;
     public FuelBar fuel;
-    private bool boostDisabled;
     private bool onGround;
-    private float boostTimer;
     private Rigidbody2D body;
+    private float boostLimit;
 
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
-        fuel.SetMaxBoost(boostLimit);
     }
 
     void Start()
     {
-        boostTimer = 0f;
+        boostLimit = boost;
+        fuel.SetMaxBoost(boostLimit);
     }
 
     void Update()
     {
         body.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, body.velocity.y);
-        fuel.SetBoost(boostLimit - boostTimer);
+        fuel.SetBoost(boost);
 
         // If player is pressing space, and boost is not disabled
-        if (Input.GetKey(KeyCode.Space) && boostDisabled == false)
+        if (Input.GetKey(KeyCode.Space) && boost > 0)
         {
             // Increase the time we have been boosting for
-            boostTimer += Time.deltaTime;
+            boost -= Time.deltaTime;
             // Boost us up!
             body.velocity = new Vector2(body.velocity.x, speed);
         }
-        // If we have been boosting for equal to or more than the boost limit
-        if (boostTimer >= boostLimit)
+        if (onGround && boost <= boostLimit)
         {
-            // Disable boost
-            boostDisabled = true;
-            // Decrese current cooldown
-            boostCooldown -= Time.deltaTime;
-        }
-        if (onGround)
-        {
-            if (boostCooldown < boostLimit)
-            {
-                // Regain boost while on the ground
-                boostCooldown += Time.deltaTime;
-            }
-        }
-        if (boostCooldown <= 0)
-        {
-            // re-enable boost
-            boostDisabled = false;
+            // Regain boost while on the ground
+            boost += Time.deltaTime;
         }
 
     }
