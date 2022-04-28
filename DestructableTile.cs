@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class DestructableTile : MonoBehaviour
 {
@@ -10,13 +11,17 @@ public class DestructableTile : MonoBehaviour
     private float startTime;
 
     public float holdTime;
+    public float score;
     public Tilemap ground;
     public Vector3Int currentTile;
+    public Text scoreDisplay;
 
     // Start is called before the first frame update
     void Start()
     {
         ground = GetComponent<Tilemap>();
+        startTime = 0f;
+        score = 0f;
     }
 
     // Update is called once per frame
@@ -28,7 +33,14 @@ public class DestructableTile : MonoBehaviour
             if (collide && startTime > holdTime)
             {
                 ground.SetTile(currentTile, null);
+                startTime = 0f;
+                score += 1;
+                scoreDisplay.text = score.ToString("0");
             }
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            startTime = 0f;
         }
         
     }
@@ -44,8 +56,7 @@ public class DestructableTile : MonoBehaviour
             {
                 hitPosition.x = hit.point.x - 0.0001f * hit.normal.x;
                 hitPosition.y = hit.point.y - 0.0001f * hit.normal.y;
-                cellPosition = ground.WorldToCell(hitPosition);
-                currentTile = ground.WorldToCell(cellPosition);
+                currentTile = ground.WorldToCell(hitPosition);
                 collide = true;
             }
         }
