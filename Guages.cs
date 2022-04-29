@@ -9,18 +9,19 @@ public class Guages : MonoBehaviour
 {
     private Vector2 playerPosition;
     public Text depthDisplay;
+    public Rigidbody2D body;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerPosition = GameObject.FindGameObjectsWithTag("Player")[0].transform.position;
+        playerPosition = body.transform.position;
         setDepth(playerPosition);
     }
 
     // Update is called once per frame
     void Update()
     {
-        playerPosition = GameObject.FindGameObjectsWithTag("Player")[0].transform.position;
+        playerPosition = body.transform.position;
         setDepth(playerPosition);
     }
 

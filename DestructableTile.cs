@@ -51,6 +51,7 @@ public class DestructableTile : MonoBehaviour
                 // This is a hack until raycasts can be implemented, for now, tile may not be findable
                 try
                 {
+                    // This should be replacing a the money value on the player, the UI should be doing this.
                     score += dataFromTiles[ground.GetTile(currentTile)].value;
                 }
                 catch (System.ArgumentNullException)
