@@ -38,7 +38,6 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
         */
-        boostBar.SetBoost(boost);
 
         // If player is pressing space, and boost is not disabled
         if (Input.GetKey(KeyCode.Space) && boost > 0)
@@ -47,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
             boost -= Time.deltaTime;
             // Boost us up!
             body.velocity = new Vector2(body.velocity.x, body.velocity.x + speed);
+            boostBar.SetBoost(boost);
         }
         if (onGround && boost <= boostLimit)
         {
